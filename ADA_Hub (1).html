@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Accurate Data Annotation — Training Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0a0c10;
+    --bg2: #111520;
+    --bg3: #161b28;
+    --card: #1a2035;
+    --border: #2a3352;
+    --accent: #4f8ef7;
+    --accent2: #38d9a9;
+    --accent3: #f7c948;
+    --text: #e8eaf2;
+    --muted: #8892aa;
+    --danger: #ff6b6b;
+    --free-badge: #38d9a9;
+    --lock-badge: #4f8ef7;
+    --radius: 14px;
+    --font-head: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 17px;
+    line-height: 1.75;
+    min-height: 100vh;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    font-family: var(--font-head);
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: var(--text);
+  }
+
+  .logo span { color: var(--accent); }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--muted);
+  }
+
+  .nav-links a:hover { color: var(--text); }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 90px 40px 70px;
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: rgba(79,142,247,0.12);
+    border: 1px solid rgba(79,142,247,0.3);
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 6px 18px;
+    border-radius: 100px;
+    margin-bottom: 28px;
+  }
+
+  .hero h1 {
+    font-family: var(--font-head);
+    font-size: clamp(36px, 5vw, 58px);
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: 22px;
+    color: var(--text);
+  }
+
+  .hero h1 span { color: var(--accent); }
+
+  .hero p {
+    font-size: 19px;
+    color: var(--muted);
+    max-width: 620px;
+    margin: 0 auto 40px;
+    line-height: 1.8;
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 14px 32px;
+    border-radius: 10px;
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  .btn-primary:hover { background: #3a7de8; transform: translateY(-2px); }
+
+  .btn-outline {
+    background: transparent;
+    border: 1.5px solid var(--border);
+    color: var(--text);
+  }
+
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── SECTIONS ── */
+  section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 60px 40px;
+  }
+
+  .section-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 10px;
+  }
+
+  .section-title {
+    font-family: var(--font-head);
+    font-size: clamp(26px, 3vw, 36px);
+    font-weight: 800;
+    margin-bottom: 10px;
+    color: var(--text);
+  }
+
+  .section-sub {
+    font-size: 17px;
+    color: var(--muted);
+    margin-bottom: 40px;
+    line-height: 1.75;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0 40px;
+  }
+
+  /* ── MODULE CARDS ── */
+  .module-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 22px;
+  }
+
+  .module-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 26px;
+    transition: border-color 0.2s, transform 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .module-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-3px);
+  }
+
+  .module-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .module-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+
+  .icon-free { background: rgba(56,217,169,0.12); }
+  .icon-lock { background: rgba(79,142,247,0.12); }
+
+  .badge {
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 100px;
+    letter-spacing: 0.5px;
+  }
+
+  .badge-free {
+    background: rgba(56,217,169,0.15);
+    color: var(--free-badge);
+    border: 1px solid rgba(56,217,169,0.3);
+  }
+
+  .badge-lock {
+    background: rgba(79,142,247,0.15);
+    color: var(--lock-badge);
+    border: 1px solid rgba(79,142,247,0.3);
+  }
+
+  .module-card h3 {
+    font-family: var(--font-head);
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--text);
+  }
+
+  .module-card p {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.7;
+    flex: 1;
+  }
+
+  .module-card .btn {
+    font-size: 14px;
+    padding: 10px 20px;
+    text-align: center;
+    width: 100%;
+    margin-top: 4px;
+  }
+
+  /* ── REGISTER SECTION ── */
+  .register-wrap {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .register-inner {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 60px 40px;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 18px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .form-group.full { grid-column: 1 / -1; }
+
+  label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--muted);
+    letter-spacing: 0.3px;
+  }
+
+  input, textarea {
+    background: var(--bg3);
+    border: 1.5px solid var(--border);
+    border-radius: 9px;
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 16px;
+    padding: 13px 16px;
+    width: 100%;
+    transition: border-color 0.2s;
+    line-height: 1.6;
+  }
+
+  input:focus, textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  textarea { min-height: 160px; resize: vertical; }
+
+  .file-upload {
+    background: var(--bg3);
+    border: 1.5px dashed var(--border);
+    border-radius: 9px;
+    padding: 22px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s;
+    font-size: 15px;
+    color: var(--muted);
+  }
+
+  .file-upload:hover { border-color: var(--accent); color: var(--accent); }
+
+  .file-upload input[type="file"] { display: none; }
+
+  .cv-result {
+    display: none;
+    margin-top: 24px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+  }
+
+  .cv-result.show { display: block; }
+
+  .score-bar-wrap {
+    margin: 16px 0;
+  }
+
+  .score-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--muted);
+  }
+
+  .score-bar {
+    height: 10px;
+    background: var(--border);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+
+  .score-fill {
+    height: 100%;
+    border-radius: 100px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    transition: width 1s ease;
+  }
+
+  .cv-feedback h4 {
+    font-family: var(--font-head);
+    font-size: 16px;
+    font-weight: 700;
+    margin: 20px 0 10px;
+    color: var(--text);
+  }
+
+  .cv-feedback ul {
+    padding-left: 20px;
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.85;
+  }
+
+  .shortlisted {
+    display: inline-block;
+    background: rgba(56,217,169,0.12);
+    border: 1px solid rgba(56,217,169,0.3);
+    color: var(--accent2);
+    padding: 8px 20px;
+    border-radius: 100px;
+    font-size: 14px;
+    font-weight: 700;
+    margin-top: 16px;
+  }
+
+  .not-shortlisted {
+    display: inline-block;
+    background: rgba(255,107,107,0.1);
+    border: 1px solid rgba(255,107,107,0.3);
+    color: var(--danger);
+    padding: 8px 20px;
+    border-radius: 100px;
+    font-size: 14px;
+    font-weight: 700;
+    margin-top: 16px;
+  }
+
+  /* ── CODE GATE MODAL ── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 40px;
+    max-width: 440px;
+    width: 90%;
+    text-align: center;
+  }
+
+  .modal h3 {
+    font-family: var(--font-head);
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 10px;
+  }
+
+  .modal p {
+    font-size: 15px;
+    color: var(--muted);
+    margin-bottom: 24px;
+    line-height: 1.75;
+  }
+
+  .modal input {
+    margin-bottom: 18px;
+    text-align: center;
+    letter-spacing: 2px;
+    font-size: 18px;
+  }
+
+  .modal-error {
+    color: var(--danger);
+    font-size: 14px;
+    margin-top: -10px;
+    margin-bottom: 14px;
+    display: none;
+  }
+
+  .modal-close {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 13px;
+    cursor: pointer;
+    margin-top: 12px;
+    font-family: var(--font-body);
+  }
+
+  .modal-close:hover { color: var(--text); }
+
+  /* ── JOBS SECTION ── */
+  .jobs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 18px;
+  }
+
+  .job-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    transition: border-color 0.2s;
+  }
+
+  .job-card:hover { border-color: var(--accent3); }
+
+  .job-platform {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--accent3);
+    margin-bottom: 8px;
+  }
+
+  .job-card h4 {
+    font-family: var(--font-head);
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text);
+    line-height: 1.35;
+  }
+
+  .job-card p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+
+  .job-tag {
+    display: inline-block;
+    background: rgba(247,201,72,0.1);
+    border: 1px solid rgba(247,201,72,0.25);
+    color: var(--accent3);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 100px;
+    margin-right: 6px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    padding: 48px 40px;
+    text-align: center;
+  }
+
+  .footer-logo {
+    font-family: var(--font-head);
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 14px;
+  }
+
+  .footer-logo span { color: var(--accent); }
+
+  .footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .footer-links a {
+    color: var(--muted);
+    font-size: 15px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--accent); }
+
+  .footer-copy {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  /* ── LOADING SPINNER ── */
+  .spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    vertical-align: middle;
+    margin-right: 8px;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    header { padding: 0 20px; }
+    .nav-links { display: none; }
+    section { padding: 50px 20px; }
+    .hero { padding: 60px 20px 50px; }
+    .form-grid { grid-template-columns: 1fr; }
+    .register-inner { padding: 50px 20px; }
+    footer { padding: 40px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">Accurate <span>Data</span> Annotation</div>
+  <nav class="nav-links">
+    <a href="#modules">Modules</a>
+    <a href="#register">Register</a>
+    <a href="#jobs">Jobs</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">Training Platform</div>
+  <h1>Get Job-Ready as a<br/><span>Data Annotator</span></h1>
+  <p>Structured training modules, real assessment practice, and AI-powered CV feedback — everything you need to land your first remote annotation role.</p>
+  <div class="hero-cta">
+    <a href="#modules" class="btn btn-primary">Start Free Training</a>
+    <a href="#register" class="btn btn-outline">Register Now</a>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<!-- FREE MODULES -->
+<section id="modules">
+  <div class="section-label">Start Here — No Code Needed</div>
+  <div class="section-title">Free Training Modules</div>
+  <div class="section-sub">Jump in immediately. These modules are open to everyone — no registration or access code required.</div>
+  <div class="module-grid">
+    <div class="module-card">
+      <div class="module-card-top">
+        <div class="module-icon icon-free">📝</div>
+        <span class="badge badge-free">Free</span>
+      </div>
+      <h3>LLM Annotator Assessment</h3>
+      <p>10-question beginner test covering core annotation concepts. Perfect starting point for anyone new to LLM evaluation work.</p>
+      <a href="https://batoul2020.github.io/LLM-Assessment-for-Beginners/" target="_blank" class="btn btn-primary">Start Module →</a>
+    </div>
+    <div class="module-card">
+      <div class="module-card-top">
+        <div class="module-icon icon-free">✏️</div>
+        <span class="badge badge-free">Free</span>
+      </div>
+      <h3>Grammar Correction Test</h3>
+      <p>English placement test for annotators. Practice identifying and correcting grammar errors — a core skill required on all annotation platforms.</p>
+      <a href="https://batoul2020.github.io/English-Placement-Test-level-1/" target="_blank" class="btn btn-primary">Start Module →</a>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- LOCKED MODULES -->
+<section>
+  <div class="section-label">Full Training Path</div>
+  <div class="section-title">Advanced Modules</div>
+  <div class="section-sub">Access all advanced simulators and assessments with your student access code.</div>
+  <div class="module-grid">
+    <div class="module-card">
+      <div class="module-card-top">
+        <div class="module-icon icon-lock">🎤</div>
+        <span class="badge badge-lock">🔒 Code Required</span>
+      </div>
+      <h3>Video Interview Prep</h3>
+      <p>27 real Q&A pairs covering everything interviewers ask. Prepare confidently for video-based annotation job interviews.</p>
+      <button class="btn btn-outline" onclick="openModal('https://batoul2020.github.io/ADA-Video-Interview-Questions-/')">Enter Code →</button>
+    </div>
+    <div class="module-card">
+      <div class="module-card-top">
+        <div class="module-icon icon-lock">🧠</div>
+        <span class="badge badge-lock">🔒 Code Required</span>
+      </div>
+      <h3>LLM Assessment Simulator</h3>
+      <p>122-question full simulator. The most comprehensive test on the platform — mirrors real assessments used by top annotation companies.</p>
+      <button class="btn btn-outline" onclick="openModal('https://batoul2020.github.io/LLM-Assessment-Simulator/')">Enter Code →</button>
+    </div>
+    <div class="module-card">
+      <div class="module-card-top">
+        <div class="module-icon icon-lock">🇺🇸</div>
+        <span class="badge badge-lock">🔒 Code Required</span>
+      </div>
+      <h3>US English LLM Simulator</h3>
+      <p>122-question Grade 2 simulator focused on US English standards. Essential for platforms that require native-level English evaluation.</p>
+      <button class="btn btn-outline" onclick="openModal('https://batoul2020.github.io/Annotation-Test-LLM-grade2/')">Enter Code →</button>
+    </div>
+    <div class="module-card">
+      <div class="module-card-top">
+        <div class="module-icon icon-lock">🌍</div>
+        <span class="badge badge-lock">🔒 Code Required</span>
+      </div>
+      <h3>LLM Evaluation Simulator (Bilingual)</h3>
+      <p>60-question bilingual assessment covering Arabic and English annotation tasks. Ideal for Arabic-speaking annotators targeting international platforms.</p>
+      <button class="btn btn-outline" onclick="openModal('https://batoul2020.github.io/10Q-LLM-Assessment-Test/')">Enter Code →</button>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- REGISTER + CV EVALUATION -->
+<div class="register-wrap" id="register">
+  <div class="register-inner">
+    <div class="section-label" style="text-align:center;">Join the Platform</div>
+    <div class="section-title" style="text-align:center;">Register & Get CV Feedback</div>
+    <div class="section-sub" style="text-align:center;">Create your free profile and get instant AI-powered feedback on your CV — tailored for data annotation roles.</div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="reg-name" placeholder="Your full name"/>
+      </div>
+      <div class="form-group">
+        <label>Age</label>
+        <input type="number" id="reg-age" placeholder="Your age" min="18" max="65"/>
+      </div>
+      <div class="form-group full">
+        <label>Email Address</label>
+        <input type="email" id="reg-email" placeholder="your@email.com"/>
+      </div>
+      <div class="form-group full">
+        <label>Paste Your CV Text</label>
+        <textarea id="cv-text" placeholder="Paste your full CV or resume text here for AI evaluation..."></textarea>
+      </div>
+    </div>
+
+    <button class="btn btn-primary" style="width:100%; font-size:17px; padding:16px;" onclick="evaluateCV()">
+      Submit & Evaluate My CV
+    </button>
+
+    <!-- CV RESULT -->
+    <div class="cv-result" id="cv-result">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+        <h3 style="font-family:var(--font-head); font-size:20px; font-weight:800;">CV Evaluation Result</h3>
+        <span id="shortlist-badge"></span>
+      </div>
+      <div class="score-bar-wrap">
+        <div class="score-label">
+          <span>Annotation Readiness Score</span>
+          <span id="score-pct">—</span>
+        </div>
+        <div class="score-bar">
+          <div class="score-fill" id="score-fill" style="width:0%"></div>
+        </div>
+      </div>
+      <div class="cv-feedback" id="cv-feedback"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ACCESS CODE MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <h3>🔒 Access Code Required</h3>
+    <p>Enter your student access code to unlock this module.</p>
+    <input type="password" id="modal-code" placeholder="Enter access code"/>
+    <div class="modal-error" id="modal-error">Incorrect code. Please try again.</div>
+    <button class="btn btn-primary" style="width:100%;" onclick="checkCode()">Unlock Module</button>
+    <br/>
+    <button class="modal-close" onclick="closeModal()">✕ Cancel</button>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<!-- JOBS SECTION -->
+<section id="jobs">
+  <div class="section-label">Opportunities</div>
+  <div class="section-title">Open Vacancies</div>
+  <div class="section-sub">Platforms currently hiring data annotators. Updated regularly — check back often.</div>
+  <div class="jobs-grid">
+    <div class="job-card">
+      <div class="job-platform">Outlier.ai</div>
+      <h4>AI Training Data Contributor</h4>
+      <p>Evaluate AI-generated responses for quality, accuracy, and safety. Flexible hours, remote worldwide.</p>
+      <span class="job-tag">Remote</span>
+      <span class="job-tag">Flexible</span>
+    </div>
+    <div class="job-card">
+      <div class="job-platform">DataAnnotation.tech</div>
+      <h4>LLM Evaluator — English</h4>
+      <p>Rate and rank AI responses based on helpfulness and correctness. Open to applicants globally.</p>
+      <span class="job-tag">Remote</span>
+      <span class="job-tag">Entry Level</span>
+    </div>
+    <div class="job-card">
+      <div class="job-platform">Toloka</div>
+      <h4>Crowd Tasks — Arabic & English</h4>
+      <p>Short annotation microtasks available daily. Arabic speakers have strong advantage for bilingual tasks.</p>
+      <span class="job-tag">Arabic</span>
+      <span class="job-tag">Remote</span>
+    </div>
+    <div class="job-card">
+      <div class="job-platform">Alignerr</div>
+      <h4>AI Response Evaluator</h4>
+      <p>Assess AI model outputs for various tasks. Bilingual annotators especially welcome.</p>
+      <span class="job-tag">Bilingual</span>
+      <span class="job-tag">Remote</span>
+    </div>
+    <div class="job-card">
+      <div class="job-platform">Innodata</div>
+      <h4>Data Annotation Specialist</h4>
+      <p>Various annotation projects including text classification, entity recognition, and content moderation.</p>
+      <span class="job-tag">Remote</span>
+      <span class="job-tag">Intermediate</span>
+    </div>
+    <div class="job-card">
+      <div class="job-platform">Scale AI</div>
+      <h4>Tasker — AI Data Labeling</h4>
+      <p>Label images, transcribe audio, and evaluate text for leading AI companies. Open worldwide.</p>
+      <span class="job-tag">Remote</span>
+      <span class="job-tag">Flexible</span>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Accurate <span>Data</span> Annotation</div>
+  <div class="footer-links">
+    <a href="https://www.facebook.com/profile.php?id=61572122864005" target="_blank">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+      Facebook
+    </a>
+    <a href="https://www.linkedin.com/company/accurate-data-annotator/posts/" target="_blank">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+      LinkedIn
+    </a>
+    <a href="mailto:batoul.hassaballa@gmail.com">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      Contact
+    </a>
+  </div>
+  <div class="footer-copy">© 2026 Accurate Data Annotation · All rights reserved</div>
+</footer>
+
+<script>
+  // ── ACCESS CODE GATE ──
+  const ACCESS_CODE = "BatoulRemoteWork1993#@";
+  let pendingURL = "";
+
+  function openModal(url) {
+    pendingURL = url;
+    document.getElementById("modal").classList.add("open");
+    document.getElementById("modal-code").value = "";
+    document.getElementById("modal-error").style.display = "none";
+    setTimeout(() => document.getElementById("modal-code").focus(), 100);
+  }
+
+  function closeModal() {
+    document.getElementById("modal").classList.remove("open");
+    pendingURL = "";
+  }
+
+  function checkCode() {
+    const entered = document.getElementById("modal-code").value.trim();
+    if (entered === ACCESS_CODE) {
+      closeModal();
+      window.open(pendingURL, "_blank");
+    } else {
+      document.getElementById("modal-error").style.display = "block";
+      document.getElementById("modal-code").focus();
+    }
+  }
+
+  document.getElementById("modal-code").addEventListener("keydown", function(e) {
+    if (e.key === "Enter") checkCode();
+  });
+
+  // ── CV EVALUATION ──
+  async function evaluateCV() {
+    const name  = document.getElementById("reg-name").value.trim();
+    const age   = document.getElementById("reg-age").value.trim();
+    const email = document.getElementById("reg-email").value.trim();
+    const cv    = document.getElementById("cv-text").value.trim();
+
+    if (!name || !email || !cv) {
+      alert("Please fill in your name, email, and CV text before submitting.");
+      return;
+    }
+
+    const btn = document.querySelector(".register-wrap .btn-primary");
+    btn.innerHTML = '<span class="spinner"></span> Evaluating your CV...';
+    btn.disabled = true;
+
+    // Notify admin by email via EmailJS (optional enhancement)
+    // For now, we log the registration
+    console.log("New registration:", { name, age, email, cvLength: cv.length });
+
+    try {
+      const response = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "claude-sonnet-4-20250514",
+          max_tokens: 1000,
+          system: `You are a CV evaluator for data annotation jobs. Evaluate the CV and respond ONLY with a JSON object. No markdown, no backticks, no explanation. The JSON must have:
+{
+  "score": <integer 0-100>,
+  "strengths": [<3 short bullet strings>],
+  "weaknesses": [<3 short bullet strings>],
+  "suggestions": [<3 specific improvement tips as strings>]
+}
+Score based on: relevant skills (data handling, attention to detail, English proficiency), relevant experience, clear formatting, and overall fit for annotation roles.`,
+          messages: [{ role: "user", content: `Evaluate this CV for data annotation job readiness:\n\n${cv}` }]
+        })
+      });
+
+      const data = await response.json();
+      const text = data.content.map(i => i.text || "").join("");
+      const clean = text.replace(/```json|```/g, "").trim();
+      const result = JSON.parse(clean);
+
+      showCVResult(result);
+    } catch (err) {
+      console.error(err);
+      alert("Evaluation failed. Please try again.");
+    } finally {
+      btn.innerHTML = "Submit & Evaluate My CV";
+      btn.disabled = false;
+    }
+  }
+
+  function showCVResult(result) {
+    const score = result.score;
+    const pct = score + "%";
+    const shortlisted = score >= 75;
+
+    document.getElementById("score-pct").textContent = pct;
+    document.getElementById("score-fill").style.width = pct;
+
+    const badge = document.getElementById("shortlist-badge");
+    if (shortlisted) {
+      badge.innerHTML = '<span class="shortlisted">✅ Strong Profile</span>';
+    } else {
+      badge.innerHTML = '<span class="not-shortlisted">⚠️ Needs Improvement</span>';
+    }
+
+    const feedback = document.getElementById("cv-feedback");
+    feedback.innerHTML = `
+      <h4>✅ Strengths</h4>
+      <ul>${result.strengths.map(s => `<li>${s}</li>`).join("")}</ul>
+      <h4>⚠️ Areas to Improve</h4>
+      <ul>${result.weaknesses.map(w => `<li>${w}</li>`).join("")}</ul>
+      <h4>💡 Suggestions</h4>
+      <ul>${result.suggestions.map(s => `<li>${s}</li>`).join("")}</ul>
+    `;
+
+    const cvResult = document.getElementById("cv-result");
+    cvResult.classList.add("show");
+    cvResult.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+</script>
+</body>
+</html>
